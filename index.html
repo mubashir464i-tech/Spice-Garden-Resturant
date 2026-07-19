@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spice Garden Restaurant — Authentic Pakistani Cuisine</title>
+<link rel="icon" type="image/jpeg" href="https://images.pexels.com/photos/4224314/pexels-photo-4224314.jpeg?auto=compress&cs=tinysrgb&w=64">
+<meta name="description" content="Spice Garden Restaurant — fresh ingredients, traditional Pakistani recipes, unforgettable flavors.">
+
+<!-- Google Fonts: Marcellus (display, arch/heritage feel), Jost (clean body sans), Amita (script accent for eyebrows) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500;600;700&family=Amita:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ============================================================
+     DESIGN TOKENS
+     Palette (brief-mandated + supporting neutrals):
+       --primary   : #C0392B  deep red     (CTAs, accents, active states)
+       --secondary : #F4A261  golden orange(highlights, hover glow, icons)
+       --bg        : #FFF8F0  warm cream   (page background)
+       --text      : #2C2C2C  charcoal     (body copy)
+       --ink       : #241611  espresso     (footer / deep contrast panels)
+       --gold-line : #D4A017  antique gold (hairline dividers, arch trim)
+       --card      : #FFFFFF  card surface
+     Type:
+       --font-display : 'Marcellus'  – wide-tracked serif, palace-signage feel
+       --font-body    : 'Jost'       – clean geometric sans, easy to read
+       --font-accent  : 'Amita'      – warm script for small eyebrow labels
+     Signature element: the Mughal / jharoka scalloped arch — used as the
+     hero divider, the menu-card image frame, and section ornaments.
+     ============================================================ */
+  :root{
+    --primary:#C0392B;
+    --primary-dark:#9c2e21;
+    --secondary:#F4A261;
+    --bg:#FFF8F0;
+    --text:#2C2C2C;
+    --ink:#241611;
+    --gold:#D4A017;
+    --card:#ffffff;
+    --font-display:'Marcellus', serif;
+    --font-body:'Jost', sans-serif;
+    --font-accent:'Amita', cursive;
+    --shadow-soft:0 10px 30px rgba(44,26,17,0.10);
+    --shadow-card:0 14px 34px rgba(192,57,43,0.14);
+    --radius:14px;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    color:var(--text);
+    background:var(--bg);
+    line-height:1.65;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  h1,h2,h3,h4{font-family:var(--font-display);font-weight:400;line-height:1.2;color:var(--ink);}
+  .container{max-width:1200px;margin:0 auto;padding:0 24px;}
+
+  /* Reduced motion respect */
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;scroll-behavior:auto !important;}
+  }
+
+  /* Focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+    outline:3px solid var(--secondary);
+    outline-offset:2px;
+  }
+
+  /* ---------- Eyebrow / section labels (Amita script signature touch) ---------- */
+  .eyebrow{
+    font-family:var(--font-accent);
+    font-size:1.35rem;
+    color:var(--primary);
+    display:inline-block;
+    margin-bottom:6px;
+    letter-spacing:0.5px;
+  }
+  .section-head{
+    text-align:center;
+    max-width:640px;
+    margin:0 auto 48px;
+  }
+  .section-head h2{
+    font-size:clamp(2rem,4vw,2.75rem);
+    letter-spacing:1px;
+    margin-bottom:14px;
+  }
+  .section-head p{color:#5a5048;font-size:1.05rem;}
+
+  /* Small arch + dot ornament used under section titles (signature motif, reused) */
+  .arch-ornament{
+    width:64px;height:34px;margin:0 auto 18px;
+    display:block;
+  }
+  .arch-ornament path{stroke:var(--gold);stroke-width:2;fill:none;}
+  .arch-ornament circle{fill:var(--primary);}
+
+  section{padding:96px 0;position:relative;}
+
+  /* ============================================================
+     NAVBAR
+     ============================================================ */
+  #navbar{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    background:transparent;
+    transition:background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+    padding:22px 0;
+  }
+  #navbar.scrolled{
+    background:rgba(255,248,240,0.96);
+    backdrop-filter:blur(8px);
+    box-shadow:0 4px 20px rgba(36,22,17,0.08);
+    padding:12px 0;
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:flex-end;position:relative;}
+  .logo{
+    position:fixed;top:18px;left:24px;z-index:1100;
+    display:flex;align-items:center;gap:8px;
+    background:rgba(36,22,17,0.55);backdrop-filter:blur(6px);
+    padding:6px 14px 6px 8px;border-radius:30px;
+    font-family:var(--font-display);font-size:1.05rem;color:#fff;
+    box-shadow:0 6px 18px rgba(0,0,0,0.2);
+    transition:background 0.35s ease, box-shadow 0.35s ease;
+  }
+  #navbar.scrolled .logo{background:rgba(255,255,255,0.9);color:var(--ink);box-shadow:0 6px 16px rgba(36,22,17,0.12);}
+  .logo svg{width:26px;height:26px;flex-shrink:0;}
+  .logo .logo-flame{fill:var(--primary);}
+  .nav-links{display:flex;gap:34px;align-items:center;}
+  .nav-links a{
+    font-size:0.95rem;letter-spacing:0.4px;font-weight:500;
+    color:#fff;position:relative;padding:4px 0;
+    transition:color 0.25s ease;
+  }
+  #navbar.scrolled .nav-links a{color:var(--text);}
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:-2px;width:0;height:2px;
+    background:var(--primary);transition:width 0.3s ease;
+  }
+  .nav-links a:hover::after, .nav-links a:focus-visible::after{width:100%;}
+  .nav-links a:hover{color:var(--secondary);}
+  .nav-cta{
+    background:var(--primary);color:#fff !important;padding:13px 32px;border-radius:30px;
+    font-weight:600;box-shadow:0 6px 16px rgba(192,57,43,0.35);white-space:nowrap;
+    display:inline-block;min-width:150px;text-align:center;
+  }
+  .nav-cta::after{display:none;}
+  .nav-cta:hover{background:var(--primary-dark);color:#fff !important;transform:translateY(-2px);}
+
+  .hamburger{
+    display:none;flex-direction:column;gap:5px;width:30px;z-index:1100;background:none;
+  }
+  .hamburger span{
+    display:block;height:2px;width:100%;background:#fff;border-radius:2px;
+    transition:transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+  }
+  #navbar.scrolled .hamburger span{background:var(--ink);}
+  .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  body.menu-open .hamburger span{background:var(--ink);}
+
+  @media (max-width:900px){
+    .nav-links{
+      position:fixed;top:0;right:0;height:100vh;width:min(78vw,320px);
+      background:var(--bg);flex-direction:column;justify-content:center;align-items:flex-start;
+      padding:40px;gap:26px;transform:translateX(100%);transition:transform 0.4s ease;
+      box-shadow:-8px 0 30px rgba(0,0,0,0.15);
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-links a{color:var(--ink) !important;font-size:1.1rem;}
+    .hamburger{display:flex;}
+  }
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    min-height:100vh;position:relative;display:flex;align-items:center;
+    background-color:#5a2018; /* fallback tone if the remote photo can't load */
+    background-image:linear-gradient(180deg, rgba(36,22,17,0.55), rgba(36,22,17,0.72)),
+      url('https://images.pexels.com/photos/7129403/pexels-photo-7129403.jpeg?auto=compress&cs=tinysrgb&w=1920');
+    background-position:center;background-size:cover;background-repeat:no-repeat;
+  }
+  .hero-content{
+    position:relative;z-index:2;max-width:720px;padding-top:70px;
+    animation:heroRise 1s ease both;
+  }
+  @keyframes heroRise{
+    from{opacity:0;transform:translateY(24px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .hero-eyebrow{
+    font-family:var(--font-accent);color:var(--secondary);font-size:1.5rem;display:block;margin-bottom:10px;
+  }
+  .hero h1{
+    color:#fff;font-size:clamp(2.4rem,5.4vw,4rem);letter-spacing:0.5px;margin-bottom:22px;
+    text-shadow:0 4px 24px rgba(0,0,0,0.35);
+  }
+  .hero p{
+    color:#f2e9dd;font-size:1.15rem;max-width:520px;margin-bottom:36px;
+  }
+  .hero-btns{display:flex;gap:18px;flex-wrap:wrap;}
+  .btn{
+    display:inline-block;padding:15px 34px;border-radius:30px;font-weight:600;font-size:0.95rem;
+    letter-spacing:0.4px;transition:transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  }
+  .btn-primary{background:var(--primary);color:#fff;box-shadow:0 10px 24px rgba(192,57,43,0.45);}
+  .btn-primary:hover{background:var(--primary-dark);transform:translateY(-3px);box-shadow:0 14px 30px rgba(192,57,43,0.55);}
+  .btn-outline{background:transparent;color:#fff;border:2px solid #fff;}
+  .btn-outline:hover{background:#fff;color:var(--ink);transform:translateY(-3px);}
+
+  /* Scalloped Mughal-arch divider closing the hero — the page's signature motif */
+  .hero-arches{
+    position:absolute;left:0;right:0;bottom:-1px;z-index:3;line-height:0;
+  }
+  .hero-arches svg{width:100%;height:auto;display:block;}
+
+  /* ============================================================
+     ABOUT
+     ============================================================ */
+  .about{background:var(--bg);position:relative;overflow:hidden;}
+  /* faint jali lattice texture, signature motif echoed subtly */
+  .about::before{
+    content:"";position:absolute;inset:0;opacity:0.05;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='%23C0392B' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-size:60px 60px;
+  }
+  .about-grid{
+    display:grid;grid-template-columns:0.9fr 1.1fr;gap:64px;align-items:center;position:relative;z-index:1;
+  }
+  .about-img{position:relative;width:300px;max-width:100%;margin:0 auto;}
+  .about-img .arch-frame{
+    width:300px;height:420px;max-width:100%;object-fit:cover;
+    clip-path:path('M0,420 L0,120 C0,50 60,0 150,0 C240,0 300,50 300,120 L300,420 Z');
+  }
+  .about-img::after{
+    content:"";position:absolute;top:20px;left:20px;width:300px;height:420px;max-width:100%;
+    border:2px solid var(--gold);opacity:0.5;z-index:-1;
+    clip-path:path('M0,420 L0,120 C0,50 60,0 150,0 C240,0 300,50 300,120 L300,420 Z');
+  }
+  .about-text h2{font-size:clamp(2rem,4vw,2.6rem);margin-bottom:18px;}
+  .about-text p{color:#5a5048;margin-bottom:18px;font-size:1.05rem;}
+  .about-stats{display:flex;gap:36px;margin-top:28px;flex-wrap:wrap;}
+  .about-stats div{text-align:left;}
+  .about-stats strong{display:block;font-family:var(--font-display);font-size:2rem;color:var(--primary);}
+  .about-stats span{font-size:0.85rem;color:#7a6f64;letter-spacing:0.4px;text-transform:uppercase;}
+
+  @media (max-width:860px){
+    .about-grid{grid-template-columns:1fr;gap:40px;}
+    .about-img{max-width:340px;margin:0 auto;}
+  }
+
+  /* ============================================================
+     MENU
+     ============================================================ */
+  .menu{background:linear-gradient(180deg,#fff,var(--bg));}
+  .menu-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:34px;
+  }
+  .menu-card{
+    background:var(--card);border-radius:var(--radius);overflow:hidden;
+    box-shadow:var(--shadow-soft);transition:transform 0.35s ease, box-shadow 0.35s ease;
+    display:flex;flex-direction:column;
+  }
+  .menu-card:hover{transform:translateY(-10px);box-shadow:var(--shadow-card);}
+  .menu-card-img-wrap{position:relative;overflow:hidden;aspect-ratio:4/3;}
+  .menu-card-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;}
+  .menu-card:hover .menu-card-img-wrap img{transform:scale(1.08);}
+  .menu-card-price{
+    position:absolute;top:14px;right:14px;background:var(--primary);color:#fff;
+    padding:6px 14px;border-radius:30px;font-weight:600;font-size:0.9rem;box-shadow:0 6px 14px rgba(192,57,43,0.4);
+  }
+  .menu-card-body{padding:22px 22px 26px;flex:1;display:flex;flex-direction:column;}
+  .menu-card-body h3{font-size:1.35rem;margin-bottom:8px;}
+  .menu-card-body p{color:#6b6156;font-size:0.95rem;flex:1;margin-bottom:18px;}
+  .order-btn{
+    align-self:flex-start;background:transparent;color:var(--primary);font-weight:600;
+    padding:10px 22px;border:2px solid var(--primary);border-radius:30px;font-size:0.88rem;
+    transition:background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  }
+  .order-btn:hover{background:var(--primary);color:#fff;transform:translateY(-2px);}
+
+  /* ============================================================
+     WHY CHOOSE US
+     ============================================================ */
+  .why{background:var(--ink);color:#f4ece1;position:relative;}
+  .why .section-head h2{color:#fff;}
+  .why .section-head p{color:#cabfb2;}
+  .why .eyebrow{color:var(--secondary);}
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:28px;}
+  .why-card{
+    background:rgba(255,255,255,0.04);border:1px solid rgba(244,162,97,0.25);
+    border-radius:var(--radius);padding:34px 26px;text-align:center;
+    transition:transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+  }
+  .why-card:hover{transform:translateY(-8px);background:rgba(244,162,97,0.08);border-color:var(--secondary);}
+  .why-icon{
+    width:64px;height:64px;margin:0 auto 20px;border-radius:50%;
+    background:radial-gradient(circle,var(--secondary),var(--primary));
+    display:flex;align-items:center;justify-content:center;
+  }
+  .why-icon svg{width:30px;height:30px;stroke:#fff;fill:none;stroke-width:1.8;}
+  .why-card h3{color:#fff;font-size:1.2rem;margin-bottom:10px;}
+  .why-card p{color:#cabfb2;font-size:0.92rem;}
+
+  /* ============================================================
+     REVIEWS
+     ============================================================ */
+  .reviews{background:var(--bg);}
+  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
+  .review-card{
+    background:var(--card);border-radius:var(--radius);padding:32px 28px;box-shadow:var(--shadow-soft);
+    position:relative;transition:transform 0.3s ease;
+  }
+  .review-card:hover{transform:translateY(-6px);}
+  .review-stars{color:var(--secondary);font-size:1.05rem;letter-spacing:2px;margin-bottom:14px;}
+  .review-card p{color:#5a5048;font-style:italic;margin-bottom:22px;}
+  .review-person{display:flex;align-items:center;gap:14px;}
+  .review-person img{width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid var(--secondary);}
+  .review-person strong{display:block;font-family:var(--font-body);font-weight:600;color:var(--ink);}
+  .review-person span{font-size:0.82rem;color:#928677;}
+
+  /* ============================================================
+     GALLERY
+     ============================================================ */
+  .gallery{background:linear-gradient(180deg,var(--bg),#fff);}
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:170px;gap:16px;
+  }
+  .gallery-grid img{
+    width:100%;height:100%;object-fit:cover;border-radius:10px;cursor:pointer;
+    transition:transform 0.45s ease, filter 0.45s ease;
+  }
+  .gallery-item{overflow:hidden;border-radius:10px;position:relative;}
+  .gallery-item::after{
+    content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(36,22,17,0.55));
+    opacity:0;transition:opacity 0.35s ease;
+  }
+  .gallery-item:hover::after{opacity:1;}
+  .gallery-item:hover img{transform:scale(1.12);}
+  .gallery-item.tall{grid-row:span 2;}
+  .gallery-item.wide{grid-column:span 2;}
+  @media (max-width:760px){
+    .gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:140px;}
+    .gallery-item.wide{grid-column:span 2;}
+  }
+
+  /* ============================================================
+     RESERVATION
+     ============================================================ */
+  .reservation{
+    background:linear-gradient(160deg,var(--primary) 0%,#8a2118 100%);
+    color:#fff;position:relative;overflow:hidden;
+  }
+  .reservation::before{
+    content:"";position:absolute;inset:0;opacity:0.08;pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30 Z' fill='none' stroke='%23FFFFFF' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-size:60px 60px;
+  }
+  .reservation-inner{position:relative;z-index:1;display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;align-items:center;}
+  .reservation-text .eyebrow{color:var(--secondary);}
+  .reservation-text h2{color:#fff;font-size:clamp(2rem,4vw,2.6rem);margin-bottom:16px;}
+  .reservation-text p{color:#f6d9d3;margin-bottom:22px;}
+  .reservation-perks{display:flex;flex-direction:column;gap:14px;}
+  .reservation-perks li{display:flex;gap:10px;align-items:center;color:#fce8e4;font-size:0.95rem;}
+  .reservation-perks svg{width:20px;height:20px;flex-shrink:0;stroke:var(--secondary);}
+
+  .res-form{
+    background:#fff;color:var(--text);border-radius:var(--radius);padding:38px;box-shadow:0 24px 50px rgba(0,0,0,0.25);
+  }
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .form-group{display:flex;flex-direction:column;gap:6px;}
+  .form-group.full{grid-column:1/-1;}
+  .form-group label{font-size:0.82rem;font-weight:600;color:var(--ink);letter-spacing:0.3px;}
+  .form-group input, .form-group select{
+    padding:12px 14px;border:1.5px solid #e7ded2;border-radius:8px;font-family:inherit;font-size:0.95rem;
+    background:#fffdfa;transition:border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .form-group input:focus, .form-group select:focus{
+    border-color:var(--primary);box-shadow:0 0 0 3px rgba(192,57,43,0.12);outline:none;
+  }
+  .res-submit{
+    width:100%;background:var(--primary);color:#fff;padding:15px;border-radius:8px;font-weight:600;
+    font-size:1rem;margin-top:6px;transition:background 0.25s ease, transform 0.2s ease;
+  }
+  .res-submit:hover{background:var(--primary-dark);transform:translateY(-2px);}
+  .form-success{
+    display:none;text-align:center;padding:20px;background:#f2f9f0;border:1px solid #bfe3b8;
+    border-radius:8px;color:#2e6b26;font-weight:600;margin-top:16px;
+  }
+  .form-success.show{display:block;animation:heroRise 0.4s ease both;}
+
+  @media (max-width:900px){
+    .reservation-inner{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+  }
+
+  /* ============================================================
+     CONTACT
+     ============================================================ */
+  .contact{background:var(--bg);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:50px;align-items:stretch;}
+  .contact-info{display:flex;flex-direction:column;gap:26px;}
+  .contact-item{display:flex;gap:16px;align-items:flex-start;}
+  .contact-item .icon-circle{
+    width:46px;height:46px;border-radius:50%;background:var(--primary);flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .contact-item .icon-circle svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:1.8;}
+  .contact-item h4{font-family:var(--font-body);font-weight:600;color:var(--ink);margin-bottom:4px;font-size:1rem;}
+  .contact-item p{color:#5a5048;font-size:0.95rem;}
+  .social-row{display:flex;gap:12px;margin-top:6px;}
+  .social-row a{
+    width:42px;height:42px;border-radius:50%;background:var(--card);border:1.5px solid #e7ded2;
+    display:flex;align-items:center;justify-content:center;transition:background 0.25s ease, transform 0.25s ease, border-color .25s ease;
+  }
+  .social-row a svg{width:18px;height:18px;stroke:var(--primary);fill:none;stroke-width:1.8;}
+  .social-row a:hover{background:var(--primary);border-color:var(--primary);transform:translateY(-3px);}
+  .social-row a:hover svg{stroke:#fff;}
+  .map-wrap{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-soft);min-height:340px;}
+  .map-wrap iframe{width:100%;height:100%;min-height:340px;border:0;display:block;}
+
+  @media (max-width:860px){
+    .contact-grid{grid-template-columns:1fr;}
+  }
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{background:var(--ink);color:#cabfb2;padding:64px 0 26px;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:50px;margin-bottom:40px;}
+  .footer-logo{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:1.5rem;color:#fff;margin-bottom:14px;}
+  .footer-logo svg{width:32px;height:32px;}
+  .footer-about p{font-size:0.92rem;line-height:1.7;max-width:320px;}
+  .footer-col h4{color:#fff;font-family:var(--font-body);font-weight:600;margin-bottom:16px;font-size:1rem;}
+  .footer-col ul{display:flex;flex-direction:column;gap:10px;}
+  .footer-col a{font-size:0.92rem;transition:color 0.25s ease, padding-left 0.25s ease;}
+  .footer-col a:hover{color:var(--secondary);padding-left:4px;}
+  .footer-bottom{
+    border-top:1px solid rgba(255,255,255,0.1);padding-top:24px;text-align:center;
+    font-size:0.85rem;color:#9a8f81;
+  }
+  @media (max-width:760px){
+    .footer-grid{grid-template-columns:1fr;gap:34px;}
+  }
+
+  /* ============================================================
+     SCROLL REVEAL (lightweight, respects reduced-motion via rule above)
+     ============================================================ */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.7s ease, transform 0.7s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  /* Back to top */
+  #toTop{
+    position:fixed;right:24px;bottom:24px;z-index:900;width:46px;height:46px;border-radius:50%;
+    background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 24px rgba(192,57,43,0.4);opacity:0;pointer-events:none;
+    transition:opacity 0.3s ease, transform 0.3s ease;
+  }
+  #toTop.show{opacity:1;pointer-events:auto;}
+  #toTop:hover{transform:translateY(-4px);}
+  #toTop svg{width:20px;height:20px;stroke:#fff;fill:none;stroke-width:2;}
+
+  @media (max-width:600px){
+    section{padding:70px 0;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+     ============================================================ -->
+<nav id="navbar">
+  <div class="container nav-inner">
+    <a href="#home" class="logo">
+      <svg viewBox="0 0 48 48" class="logo-mark" aria-hidden="true">
+        <path class="logo-flame" d="M24 4c3 6-2 9-2 14 0 4 3 6 6 6 4 0 7-3 7-8 6 5 8 12 8 17 0 11-9 20-20 20S3 44 3 33c0-9 6-15 9-19 1 4 3 6 6 6 3 0 4-3 3-6-2-5 0-8 3-10z" fill="#C0392B"/>
+      </svg>
+      Spice Garden
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="nav-link">Home</a></li>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#menu" class="nav-link">Menu</a></li>
+      <li><a href="#gallery" class="nav-link">Gallery</a></li>
+      <li><a href="#reviews" class="nav-link">Reviews</a></li>
+      <li><a href="#reservation" class="nav-link">Reservation</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+      <li><a href="#reservation" class="nav-cta">Book a Table</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<header class="hero" id="home">
+  <div class="container hero-content">
+    <span class="hero-eyebrow">Est. flavors, generations strong</span>
+    <h1>Experience the Taste of Authentic Pakistani Cuisine</h1>
+    <p>Fresh ingredients, traditional recipes, and unforgettable flavors served with love.</p>
+    <div class="hero-btns">
+      <a href="#menu" class="btn btn-primary">View Menu</a>
+      <a href="#reservation" class="btn btn-outline">Book a Table</a>
+    </div>
+  </div>
+
+  <!-- Signature scalloped Mughal-arch divider -->
+  <div class="hero-arches" aria-hidden="true">
+    <svg viewBox="0 0 1200 90" preserveAspectRatio="none">
+      <path fill="#FFF8F0" d="M0,90 L0,50
+        Q25,0 50,50 Q75,0 100,50 Q125,0 150,50 Q175,0 200,50 Q225,0 250,50
+        Q275,0 300,50 Q325,0 350,50 Q375,0 400,50 Q425,0 450,50 Q475,0 500,50
+        Q525,0 550,50 Q575,0 600,50 Q625,0 650,50 Q675,0 700,50 Q725,0 750,50
+        Q775,0 800,50 Q825,0 850,50 Q875,0 900,50 Q925,0 950,50 Q975,0 1000,50
+        Q1025,0 1050,50 Q1075,0 1100,50 Q1125,0 1150,50 Q1175,0 1200,50 L1200,90 Z"/>
+    </svg>
+  </div>
+</header>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section class="about" id="about">
+  <div class="container about-grid">
+    <div class="about-img reveal">
+      <img class="arch-frame" src="https://images.pexels.com/photos/34686219/pexels-photo-34686219.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Cozy Spice Garden dining room with warm ambient lighting">
+    </div>
+    <div class="about-text reveal">
+      <span class="eyebrow">Our Story</span>
+      <h2>About Spice Garden</h2>
+      <p>Spice Garden Restaurant brings together authentic Pakistani flavors with a modern dining experience. Our chefs prepare every meal using fresh ingredients, aromatic spices, and traditional recipes that have been loved for generations.</p>
+      <p>Whether you're visiting with family, friends, or celebrating a special occasion, we promise delicious food, warm hospitality, and unforgettable memories.</p>
+      <div class="about-stats">
+        <div><strong>15+</strong><span>Years of Flavor</span></div>
+        <div><strong>40+</strong><span>Signature Dishes</span></div>
+        <div><strong>20k+</strong><span>Happy Guests</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FEATURED MENU
+     ============================================================ -->
+<section class="menu" id="menu">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Taste the Tradition</span>
+      <h2>Featured Menu</h2>
+      <svg class="arch-ornament" viewBox="0 0 64 34"><path d="M2,32 Q2,4 32,4 Q62,4 62,32"/><circle cx="32" cy="30" r="2.5"/></svg>
+      <p>Six signature dishes our guests keep coming back for.</p>
+    </div>
+
+    <div class="menu-grid">
+      <article class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <img src="https://images.pexels.com/photos/4224314/pexels-photo-4224314.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Chicken Biryani garnished with fresh herbs and spices">
+          <span class="menu-card-price">$14</span>
+        </div>
+        <div class="menu-card-body">
+          <h3>Chicken Biryani</h3>
+          <p>Fragrant basmati rice layered with tender spiced chicken, saffron, and fried onions.</p>
+          <button class="order-btn" onclick="showToast('Chicken Biryani added to your order!')">Order Now</button>
+        </div>
+      </article>
+
+      <article class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <img src="https://images.pexels.com/photos/7353487/pexels-photo-7353487.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Chicken Karahi curry in traditional wok">
+          <span class="menu-card-price">$16</span>
+        </div>
+        <div class="menu-card-body">
+          <h3>Chicken Karahi</h3>
+          <p>Tomato-rich, hand-tossed chicken curry simmered with ginger, garlic, and green chilies.</p>
+          <button class="order-btn" onclick="showToast('Chicken Karahi added to your order!')">Order Now</button>
+        </div>
+      </article>
+
+      <article class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <img src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Juicy beef burger with crispy fries">
+          <span class="menu-card-price">$9</span>
+        </div>
+        <div class="menu-card-body">
+          <h3>Beef Burger</h3>
+          <p>A juicy grilled beef patty, melted cheese, and house sauce in a toasted sesame bun.</p>
+          <button class="order-btn" onclick="showToast('Beef Burger added to your order!')">Order Now</button>
+        </div>
+      </article>
+
+      <article class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <img src="https://images.pexels.com/photos/12738462/pexels-photo-12738462.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Grilled BBQ platter with skewers over charcoal">
+          <span class="menu-card-price">$19</span>
+        </div>
+        <div class="menu-card-body">
+          <h3>BBQ Platter</h3>
+          <p>A smoky mixed grill of seekh kebab, tikka, and malai boti, char-grilled to perfection.</p>
+          <button class="order-btn" onclick="showToast('BBQ Platter added to your order!')">Order Now</button>
+        </div>
+      </article>
+
+      <article class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <img src="https://images.pexels.com/photos/2762942/pexels-photo-2762942.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Cheese pizza slice close up">
+          <span class="menu-card-price">$12</span>
+        </div>
+        <div class="menu-card-body">
+          <h3>Chicken Pizza</h3>
+          <p>Wood-fired crust topped with spiced chicken, peppers, and a generous layer of mozzarella.</p>
+          <button class="order-btn" onclick="showToast('Chicken Pizza added to your order!')">Order Now</button>
+        </div>
+      </article>
+
+      <article class="menu-card reveal">
+        <div class="menu-card-img-wrap">
+          <img src="https://images.pexels.com/photos/34802628/pexels-photo-34802628.jpeg?auto=compress&cs=tinysrgb&w=700" alt="Chocolate dessert cake with strawberries">
+          <span class="menu-card-price">$7</span>
+        </div>
+        <div class="menu-card-body">
+          <h3>Chocolate Dessert</h3>
+          <p>Rich, layered chocolate cake finished with truffles and fresh strawberries.</p>
+          <button class="order-btn" onclick="showToast('Chocolate Dessert added to your order!')">Order Now</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHY CHOOSE US
+     ============================================================ -->
+<section class="why" id="why">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">What Sets Us Apart</span>
+      <h2>Why Choose Us</h2>
+      <svg class="arch-ornament" viewBox="0 0 64 34"><path d="M2,32 Q2,4 32,4 Q62,4 62,32" stroke="#F4A261"/><circle cx="32" cy="30" r="2.5" fill="#F4A261"/></svg>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-4 4-6 7-6 11a6 6 0 0 0 12 0c0-4-2-7-6-11z"/></svg></div>
+        <h3>Fresh Ingredients</h3>
+        <p>Sourced daily and prepared with care, so every dish tastes exactly as it should.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2v6a3 3 0 0 0 6 0V2M9 8v14M18 2v20"/></svg></div>
+        <h3>Expert Chefs</h3>
+        <p>Decades of combined experience in traditional Pakistani and modern cooking.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Fast Service</h3>
+        <p>Attentive staff and an efficient kitchen mean your table is never kept waiting.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-icon"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10l9-7 9 7"/><path d="M5 9v11h14V9"/></svg></div>
+        <h3>Cozy Environment</h3>
+        <p>Warm lighting, comfortable seating, and hospitality that feels like home.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CUSTOMER REVIEWS
+     ============================================================ -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Kind Words</span>
+      <h2>Customer Reviews</h2>
+      <svg class="arch-ornament" viewBox="0 0 64 34"><path d="M2,32 Q2,4 32,4 Q62,4 62,32"/><circle cx="32" cy="30" r="2.5"/></svg>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p>"The biryani tasted just like my grandmother's — rich, fragrant, and full of flavor. This is now our family's favorite spot."</p>
+        <div class="review-person">
+          <img src="https://images.pexels.com/photos/3791554/pexels-photo-3791554.jpeg?auto=compress&cs=tinysrgb&w=120" alt="Portrait of Ayesha K., customer">
+          <div><strong>Ayesha K.</strong><span>Regular Guest</span></div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p>"Warm hospitality, quick service, and the BBQ platter is unbeatable. Perfect for celebrating birthdays with the whole family."</p>
+        <div class="review-person">
+          <img src="https://images.pexels.com/photos/19456424/pexels-photo-19456424.jpeg?auto=compress&cs=tinysrgb&w=120" alt="Portrait of Hamza R., customer">
+          <div><strong>Hamza R.</strong><span>First-time Visitor</span></div>
+        </div>
+      </div>
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p>"Cozy interior, attentive staff, and every dish we ordered came out fresh and beautifully plated. Highly recommend the karahi."</p>
+        <div class="review-person">
+          <img src="https://images.pexels.com/photos/18809829/pexels-photo-18809829.jpeg?auto=compress&cs=tinysrgb&w=120" alt="Portrait of Sana M., customer">
+          <div><strong>Sana M.</strong><span>Food Blogger</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GALLERY
+     ============================================================ -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">A Peek Inside</span>
+      <h2>Gallery</h2>
+      <svg class="arch-ornament" viewBox="0 0 64 34"><path d="M2,32 Q2,4 32,4 Q62,4 62,32"/><circle cx="32" cy="30" r="2.5"/></svg>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item wide tall"><img src="https://images.pexels.com/photos/776538/pexels-photo-776538.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Warm-lit restaurant interior with hanging lamps"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/12737817/pexels-photo-12737817.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Top view of chicken biryani dish"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/11989697/pexels-photo-11989697.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Grilled meat skewers on charcoal grill"></div>
+      <div class="gallery-item tall"><img src="https://images.pexels.com/photos/4224304/pexels-photo-4224304.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Chicken biryani served on a black plate"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/132694/pexels-photo-132694.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Sliced chocolate cake dessert"></div>
+      <div class="gallery-item wide"><img src="https://images.pexels.com/photos/7129403/pexels-photo-7129403.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Traditional dishes spread across the table"></div>
+      <div class="gallery-item"><img src="https://images.pexels.com/photos/2741457/pexels-photo-2741457.jpeg?auto=compress&cs=tinysrgb&w=500" alt="Cheese pizza close up"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     RESERVATION
+     ============================================================ -->
+<section class="reservation" id="reservation">
+  <div class="container reservation-inner">
+    <div class="reservation-text reveal">
+      <span class="eyebrow" style="color:#F4A261;">Save Your Spot</span>
+      <h2>Reserve a Table</h2>
+      <p>Planning a family dinner, a date night, or a celebration? Let us know and we'll have your table ready.</p>
+      <ul class="reservation-perks">
+        <li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Instant confirmation</li>
+        <li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Free cancellation up to 2 hours before</li>
+        <li><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Group and private dining available</li>
+      </ul>
+    </div>
+
+    <form class="res-form reveal" id="reservationForm" novalidate>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="resName">Name</label>
+          <input type="text" id="resName" name="name" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label for="resEmail">Email</label>
+          <input type="email" id="resEmail" name="email" placeholder="you@example.com" required>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="resPhone">Phone Number</label>
+          <input type="tel" id="resPhone" name="phone" placeholder="+92 300 1234567" required>
+        </div>
+        <div class="form-group">
+          <label for="resGuests">Number of Guests</label>
+          <select id="resGuests" name="guests" required>
+            <option value="">Select</option>
+            <option>1 Guest</option><option>2 Guests</option><option>3 Guests</option>
+            <option>4 Guests</option><option>5+ Guests</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="resDate">Date</label>
+          <input type="date" id="resDate" name="date" required>
+        </div>
+        <div class="form-group">
+          <label for="resTime">Time</label>
+          <input type="time" id="resTime" name="time" required>
+        </div>
+      </div>
+      <button type="submit" class="res-submit">Reserve Table</button>
+      <div class="form-success" id="formSuccess">Thank you! Your table has been requested — we'll confirm shortly by email.</div>
+    </form>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACT
+     ============================================================ -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Find Us</span>
+      <h2>Contact</h2>
+      <svg class="arch-ornament" viewBox="0 0 64 34"><path d="M2,32 Q2,4 32,4 Q62,4 62,32"/><circle cx="32" cy="30" r="2.5"/></svg>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="icon-circle"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div><h4>Address</h4><p>Karachi, Sindh, Pakistan</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="icon-circle"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 2.9a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c.9.4 1.9.6 2.9.7a2 2 0 0 1 1.8 2.1z"/></svg></div>
+          <div><h4>Phone Number</h4><p>+92 21 3456 7890</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="icon-circle"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M22 6l-10 7L2 6"/></svg></div>
+          <div><h4>Email</h4><p>hello@spicegarden.pk</p></div>
+        </div>
+        <div>
+          <h4 style="font-family:var(--font-body);font-weight:600;color:var(--ink);margin-bottom:12px;">Follow Us</h4>
+          <div class="social-row">
+            <a href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+            <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+            <a href="#" aria-label="Twitter"><svg viewBox="0 0 24 24"><path d="M23 4.5a9 9 0 0 1-2.6.7 4.5 4.5 0 0 0 2-2.5 9 9 0 0 1-2.9 1.1A4.5 4.5 0 0 0 12 7.5c0 .4 0 .7.1 1A12.8 12.8 0 0 1 2.9 3.7a4.5 4.5 0 0 0 1.4 6 4.5 4.5 0 0 1-2-.6v.1a4.5 4.5 0 0 0 3.6 4.4 4.5 4.5 0 0 1-2 .1 4.5 4.5 0 0 0 4.2 3.1A9 9 0 0 1 1 19a12.8 12.8 0 0 0 6.9 2c8.3 0 12.8-6.9 12.8-12.8v-.6A9.2 9.2 0 0 0 23 4.5z"/></svg></a>
+          </div>
+        </div>
+      </div>
+      <div class="map-wrap reveal">
+        <iframe src="https://www.google.com/maps?q=Karachi,Pakistan&output=embed" title="Spice Garden Restaurant location map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <div class="footer-logo">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4c3 6-2 9-2 14 0 4 3 6 6 6 4 0 7-3 7-8 6 5 8 12 8 17 0 11-9 20-20 20S3 44 3 33c0-9 6-15 9-19 1 4 3 6 6 6 3 0 4-3 3-6-2-5 0-8 3-10z" fill="#F4A261"/></svg>
+          Spice Garden
+        </div>
+        <p>Authentic Pakistani cuisine served with warmth, tradition, and a modern touch — one plate at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#reviews">Reviews</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit Us</h4>
+        <ul>
+          <li><a href="#reservation">Reservation</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="tel:+922134567890">+92 21 3456 7890</a></li>
+          <li><a href="mailto:hello@spicegarden.pk">hello@spicegarden.pk</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 Spice Garden Restaurant. All Rights Reserved.
+    </div>
+  </div>
+</footer>
+
+<!-- Toast for "Order Now" feedback -->
+<div id="toast" style="position:fixed;left:50%;bottom:30px;transform:translate(-50%,120%);background:#241611;color:#fff;padding:14px 26px;border-radius:30px;font-size:0.9rem;box-shadow:0 12px 30px rgba(0,0,0,0.3);z-index:2000;transition:transform 0.4s ease;"></div>
+
+<!-- Back to top -->
+<button id="toTop" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<script>
+  /* ============================================================
+     NAVBAR: scroll shrink + hamburger + smooth scroll
+     ============================================================ */
+  const navbar = document.getElementById('navbar');
+  const hamburger = document.getElementById('hamburger');
+  const navLinks = document.getElementById('navLinks');
+  const toTopBtn = document.getElementById('toTop');
+
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+    toTopBtn.classList.toggle('show', window.scrollY > 500);
+  });
+
+  hamburger.addEventListener('click', () => {
+    const open = navLinks.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', open);
+    document.body.classList.toggle('menu-open', open);
+  });
+
+  // Close mobile menu after clicking a link
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('menu-open');
+    });
+  });
+
+  toTopBtn.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+  /* ============================================================
+     IMAGE FALLBACK
+     If a photo can't load (e.g. an offline preview or a sandbox that
+     blocks external requests), swap it for a branded placeholder
+     instead of leaving a broken-image icon.
+     ============================================================ */
+  const placeholderSVG = 'data:image/svg+xml;utf8,' + encodeURIComponent(`
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300">
+      <rect width="400" height="300" fill="#F4A261"/>
+      <circle cx="200" cy="130" r="55" fill="none" stroke="#FFF8F0" stroke-width="6"/>
+      <path d="M170 105 v50 M185 105 v20 a8 8 0 0 0 16 0 v-20" fill="none" stroke="#FFF8F0" stroke-width="6" stroke-linecap="round"/>
+      <path d="M230 105 v50 M230 105 q14 0 14 16 q0 12 -14 14" fill="none" stroke="#FFF8F0" stroke-width="6" stroke-linecap="round"/>
+      <text x="200" y="225" font-family="Georgia,serif" font-size="20" fill="#FFF8F0" text-anchor="middle">Spice Garden</text>
+    </svg>`);
+  document.querySelectorAll('img').forEach(img => {
+    img.addEventListener('error', function handler(){
+      this.removeEventListener('error', handler);
+      this.src = placeholderSVG;
+      this.style.objectFit = 'cover';
+    });
+  });
+
+  /* ============================================================
+     SCROLL REVEAL ANIMATION
+     ============================================================ */
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  /* ============================================================
+     TOAST (Order Now feedback)
+     ============================================================ */
+  let toastTimer;
+  function showToast(msg){
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.style.transform = 'translate(-50%,0)';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      toast.style.transform = 'translate(-50%,120%)';
+    }, 2200);
+  }
+
+  /* ============================================================
+     RESERVATION FORM (client-side only — no backend configured)
+     ============================================================ */
+  const reservationForm = document.getElementById('reservationForm');
+  const formSuccess = document.getElementById('formSuccess');
+  // sensible default: block past dates
+  document.getElementById('resDate').min = new Date().toISOString().split('T')[0];
+
+  reservationForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!reservationForm.checkValidity()) {
+      reservationForm.reportValidity();
+      return;
+    }
+    formSuccess.classList.add('show');
+    reservationForm.reset();
+    formSuccess.scrollIntoView({behavior:'smooth', block:'nearest'});
+  });
+</script>
+</body>
+</html>
